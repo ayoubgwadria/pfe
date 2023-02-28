@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  email:{
+  email: {
     type: String,
     required: true,
     unique: true
@@ -22,14 +22,23 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  latitude:{
+  latitude: {
     type: String,
     required: true
   },
-  longitude:{
+  longitude: {
     type: String,
     required: true
   },
+  domaine: {
+    type: String,
+    required: true
+  },
+  usertype: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserType',
+    required: true
+  }
 });
 
 const User = mongoose.model('User', userSchema);
