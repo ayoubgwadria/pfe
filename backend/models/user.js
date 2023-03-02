@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  name: {
+  nom: {
     type: String,
     required: true
   },
@@ -34,11 +34,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  usertype: {
+/*   usertype: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'UserType',
     required: true
-  }
+  } */
 });
 
 const User = mongoose.model('User', userSchema);

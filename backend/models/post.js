@@ -10,7 +10,7 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
-  emplacement: {
+/*   emplacement: {
     type: String,
     required: true
   },
@@ -21,16 +21,16 @@ const PostSchema = new Schema({
   latitude: {
     type: String,
     required: true
-  },
+  }, */
   date: {
     type: Date,
-    required: true
+    default: Date.now
   },
-  client: {
+ /*  client: {
     type: Schema.Types.ObjectId,
     ref: 'client',
     required: true
-  }
+  } */
 });
 
 const post = mongoose.model('post', PostSchema);
