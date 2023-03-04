@@ -4,14 +4,14 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require ('./routes/postRoutes');
-
+const postulationRoutes = require('./routes/postulationRoutes');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/users', userRoutes);
 app.use('/api/post', postRoutes);
-
+app.use('/postulations', postulationRoutes);
 
 mongoose.connect(process.env.URL, {
   useNewUrlParser: true,

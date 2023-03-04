@@ -33,10 +33,10 @@ login = async (req, res) => {
       return res.status(401).json({ message: 'mot de passe invalide' });
     }
     const token = jwt.sign({ id: user.id, name: user.nom, email: user.email }, process.env.SECRET);
-    const decodedToken = jwt.verify(token, process.env.SECRET);
+   
 
     res.status(200).json({ message: 'Connexion réussie', token });
-    console.log(decodedToken);
+  
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

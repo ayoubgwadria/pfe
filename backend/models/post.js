@@ -10,27 +10,31 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
-/*   emplacement: {
+  image: {
     type: String,
     required: true
   },
-  longitude: {
-    type: String,
-    required: true
-  },
-  latitude: {
-    type: String,
-    required: true
-  }, */
+  /*   emplacement: {
+      type: String,
+      required: true
+    },
+    longitude: {
+      type: String,
+      required: true
+    },
+    latitude: {
+      type: String,
+      required: true
+    }, */
   date: {
     type: Date,
     default: Date.now
   },
- /*  client: {
+  client: {
     type: Schema.Types.ObjectId,
     ref: 'client',
     required: true
-  } */
+  }
 });
 
 const post = mongoose.model('post', PostSchema);
