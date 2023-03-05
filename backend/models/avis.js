@@ -15,12 +15,12 @@ const AvisSchema = new mongoose.Schema({
   },
   professionnel: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Professionnel',
+    ref: 'User',
     required: true
   },
   client: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'client',
+    ref: 'User',
     required: true
   }
 });

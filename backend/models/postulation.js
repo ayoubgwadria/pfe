@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const postulationSchema = new mongoose.Schema({
     client: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'client',
+        ref: 'User',
         required:true
     },
     post: {
@@ -13,7 +13,7 @@ const postulationSchema = new mongoose.Schema({
     },
     professionnel: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'professionnel',
+        ref: 'User',
         required:true
     },
     status: {

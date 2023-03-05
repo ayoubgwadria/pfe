@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
 const postController = require('../controllers/post.controller');
+const auth = require('../middleware/auth');
 
-const upload = multer({ dest: 'uploads/' });
 
-router.post('/add', upload.single('image'), postController.add);
-router.delete('/delete', postController.deletePost);
-router.get('/getpostbyclient/:idclient', postController.getpostbyclient);
-router.get('/updatepost/:postId', postController.updatepost);
+router.post('/add',  auth,postController.add);
+router.delete('/delete', auth,postController.deletePost);
+router.get('/getpostbyclient/:idclient',auth, postController.getpostbyclient);
+router.get('/updatepost/:postId', auth,postController.updatepost);
 
 
 module.exports = router;

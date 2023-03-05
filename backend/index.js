@@ -5,13 +5,15 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require ('./routes/postRoutes');
 const postulationRoutes = require('./routes/postulationRoutes');
+const contratRoutes = require ('./routes/contratRoutes')
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }), bodyParser.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/post', postRoutes);
-app.use('/postulations', postulationRoutes);
+app.use('/api/postulations', postulationRoutes);
+app.use('/api/contrats', contratRoutes);
 
 mongoose.connect(process.env.URL, {
   useNewUrlParser: true,

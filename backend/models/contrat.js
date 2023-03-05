@@ -1,9 +1,18 @@
 const mongoose = require('mongoose');
 
-const contractSchema = new mongoose.Schema({
+const contratSchema = new mongoose.Schema({
+    titre: {
+        type: String,
+        required: true
+    },
 
-    date: {
-        type: Date,
+    prix: {
+        type: String,
+        required: true
+    },
+
+    description: {
+        type: String,
         required: true
     },
 
@@ -12,27 +21,31 @@ const contractSchema = new mongoose.Schema({
         required: true
     },
 
-    longitude: {
-        type: String,
-        required: true
-    },
-    latitude: {
-        type: String,
-        required: true
-    },
     professionnel_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Professionnel',
+        ref: 'User',
         required: true
-      },
-      client_id: {
+    },
+    client_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'client',
+        ref: 'User',
         required: true
-      }
-});
+    },
+    postulation_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Postulation',
+        required: true
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'accepted', 'refused'],
+        default: 'pending',
+        required: true
+    }
+},{ timestamps: true });
 
-const Contract = mongoose.model('Contract', contractSchema);
+const Contrat = mongoose.model('Contrat', contratSchema);
 
-module.exports = Contract;
+module.exports = Contrat;
+
 

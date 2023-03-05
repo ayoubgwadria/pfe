@@ -15,12 +15,12 @@ const paymentSchema = new mongoose.Schema({
   },
   professionnel_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Professionnel',
+    ref: 'User',
     required: true
   },
   client_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'client',
+    ref: 'User',
     required: true
   }
 });

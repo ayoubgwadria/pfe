@@ -10,10 +10,7 @@ const PostSchema = new Schema({
     type: String,
     required: true
   },
-  image: {
-    type: String,
-    required: true
-  },
+
   /*   emplacement: {
       type: String,
       required: true
@@ -32,7 +29,7 @@ const PostSchema = new Schema({
   },
   client: {
     type: Schema.Types.ObjectId,
-    ref: 'client',
+    ref: 'User',
     required: true
   }
 });
