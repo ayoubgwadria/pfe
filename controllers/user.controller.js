@@ -1,10 +1,28 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const path = require('path');
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const userId = req.user._id;
+    const dir = `./assets/${userId}`;
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: function (req, file, cb) {
+    cb(null, uuidv4() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 } // set limit to 1 MB
+}).single('image');
 register = async (req, res) => {
   try {
     const { nom, prenom, email, mot_de_passe, telephone, emplacement, latitude, longitude, usertype } = req.body;
-
+    console.log('data', nom)
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -15,6 +33,17 @@ register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(mot_de_passe, salt);
     const user = new User({ nom, prenom, email, mot_de_passe: hashedPassword, telephone, emplacement, latitude, longitude, usertype });
     await user.save();
+    req.user = user
+    upload(req, res, (err) => {
+      if (err) {
+        // handle error
+        console.error(err);
+        res.status(500).json({ message: 'Failed to upload image' });
+      } else {
+        // file uploaded successfully, send response
+        res.status(200).json({ message: 'User and image uploaded successfully' });
+      }
+    });
     res.status(201).json({ message: 'Utilisateur créé avec succès', userId: user._id });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -35,7 +64,7 @@ login = async (req, res) => {
     const token = jwt.sign({ id: user.id, nom: user.nom, prenom: user.prenom, email: user.email, telephone: user.telephone, emplacement: user.emplacement, usertype: user.usertype }, process.env.SECRET);
 
 
-    res.status(200).json({ message: 'Connexion réussie', token , usertype: user.usertype, id: user.id});
+    res.status(200).json({ message: 'Connexion réussie', token, usertype: user.usertype, id: user.id });
 
   } catch (error) {
     res.status(500).json({ message: error.message });
