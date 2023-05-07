@@ -5,19 +5,22 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  date: {
-    type: Date,
+  room: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Chatroom',
     required: true
   },
-  expediteur_id: {
-    type: Number,
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
-  destinataire_id: {
-    type: Number,
+  reciever: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   }
-});
+}, { timestamps: true });
 const message = mongoose.model('Message', messageSchema);
 module.exports = message;
 
