@@ -11,7 +11,7 @@ const auth = async (req, res, next) => {
       throw new Error();
     }
 
-    req.user = { id: user._id };
+    req.user = { id: String(user._id) };
     next();
   } catch (error) {
     res.status(401).json({ message: 'Non authentifié' });
