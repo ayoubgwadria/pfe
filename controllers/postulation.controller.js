@@ -1,6 +1,10 @@
 const Postulation = require('../models/postulation');
 const Post = require('../models/post');
 const Chatroom = require('../models/chatroom')
+
+
+
+
 createPostulation = async (req, res) => {
     try {
         const { durée, Lettre_de_motivation } = req.body;
@@ -20,6 +24,7 @@ createPostulation = async (req, res) => {
         });
 
         const savedPostulation = await postulation.save();
+        req.postulation = savedPostulation
 
         res.status(201).json(savedPostulation);
     } catch (err) {
@@ -41,7 +46,7 @@ const getPostulationsByClient = async (req, res) => {
     const { clientId } = req.params;
     try {
         const postulations = await Postulation.find({ clientId: clientId }).populate("technicienId");
-        console.log('postutalion', postulations)
+        /*  console.log('postutalion', postulations) */
         res.status(200).json(postulations);
     } catch (error) {
         res.status(400).json({ message: error.message });

@@ -32,7 +32,9 @@ const PostSchema = new Schema({
     ref: 'User',
     required: true
   },
-
+  image: {
+    type: String
+  }
 });
 
 const post = mongoose.model('post', PostSchema);

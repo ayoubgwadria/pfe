@@ -5,7 +5,7 @@ const Message = require('../models/message')
 const getChatRoombyIdPostulaTion = async (req, res) => {
     const { idPostulation } = req.params
     try {
-        const chatroom = await Chatroom.findOne({ PostulationId: idPostulation })
+        const chatroom = await Chatroom.findOne({ PostulationId: idPostulation }).populate('PostulationId').populate('postId').populate('technicienId').populate('clientId')
         res.status(200).json(chatroom)
     } catch (error) {
         res.status(400).json({ message: error.message });

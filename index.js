@@ -12,7 +12,9 @@ const profileRoutes = require('./routes/profileRoutes');
 const chatRoomRoute = require('./routes/chatroom.routes')
 const cors = require("cors")
 const app = express();
+const path = require('path')
 const server = http.createServer(app);
+app.use(express.static(path.join(__dirname, 'assets')));
 const io = new Server(server, {
   cors: {
     origin: '*',
@@ -42,11 +44,15 @@ mongoose.connect(process.env.URL, {
     const PORT = process.env.PORT;
 
     // Set up socket.io
+
     io.on('connection', (socket) => {
-      console.log('Socket connected');
+
+      socket.on("join_room", (data) => {
+        socket.join(data)
+      })
       socket.on('send_message', (data) => {
-        console.log('Socket received message:', data);
-        io.emit('receive_message', data);
+        console.log('Socket connected', data);
+        socket.to(data.room).emit("recievce_message", data.room)
       })
     })
 

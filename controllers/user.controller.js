@@ -1,28 +1,13 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const path = require('path');
-const multer = require('multer');
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const userId = req.user._id;
-    const dir = `./assets/${userId}`;
-    fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
-  },
-  filename: function (req, file, cb) {
-    cb(null, uuidv4() + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 } // set limit to 1 MB
-}).single('image');
+const fs = require('fs');
+const path = require('path')
+/* const fileType = require('file-type'); */
 register = async (req, res) => {
   try {
     const { nom, prenom, email, mot_de_passe, telephone, emplacement, latitude, longitude, usertype } = req.body;
-    console.log('data', nom)
+
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -33,15 +18,25 @@ register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(mot_de_passe, salt);
     const user = new User({ nom, prenom, email, mot_de_passe: hashedPassword, telephone, emplacement, latitude, longitude, usertype });
     await user.save();
-    req.user = user
-    upload(req, res, (err) => {
+    const imagePath = `./assets/${email.split(".")[0]}/user/`
+    const newIamgepath = `./assets/${user._id}/user/`
+    const imageName = `${email.split(".")[0]}`
+    const imageExtension = path.extname(`${imagePath}${imageName}`);
+    /*  fs.rename(`${imagePath}`, `${newIamgepath}`,(err)=>{
+       if (err) {
+         console.log('Error renaming image:', err);
+       } else {
+         console.log('Image renamed successfully');
+       }
+     }) */
+
+    fs.rename(`${imagePath}${imageName}${imageExtension}${req.image}`, `${imagePath}${user._id}${imageExtension}${req.image}`, async function (err) {
       if (err) {
-        // handle error
-        console.error(err);
-        res.status(500).json({ message: 'Failed to upload image' });
+        console.log('Error renaming image:', err);
       } else {
-        // file uploaded successfully, send response
-        res.status(200).json({ message: 'User and image uploaded successfully' });
+        console.log('Image renamed successfully');
+        /*  var useUpd = new User() */
+        await User.findOneAndUpdate({ _id: user._id }, { image: `${imagePath}${user._id}${imageExtension}${req.image}` })
       }
     });
     res.status(201).json({ message: 'Utilisateur créé avec succès', userId: user._id });
@@ -96,5 +91,19 @@ const getTechniciens = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getUserImage = async (req, res) => {
+  const { id } = req.params
+  const user = await User.findById(id)
 
-module.exports = { register, login, getProfile, getTechniciens };
+  var file = null
+  console.log('user', user)
+  if (user?.image && user?.image !== "") {
+    file = fs.createReadStream(user.image)
+
+    file.pipe(res);
+    res.status(200)
+  }
+  else { res.status(200).send('noe image') }
+
+}
+module.exports = { register, login, getProfile, getTechniciens, getUserImage };
